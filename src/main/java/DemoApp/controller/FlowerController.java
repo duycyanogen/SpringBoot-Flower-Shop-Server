@@ -11,16 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import DemoApp.model.Flower;
 import DemoApp.service.FlowerService;
+import Response.ResponseObject;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin("*")
 public class FlowerController {
 	@Autowired
 	private FlowerService flowerService;
 
 	@GetMapping(path = "/flower/get")
-	public ArrayList<Flower> getAllFlower() throws SQLException, ClassNotFoundException {
-		return flowerService.getAllFlower();
+	public ResponseObject<Object> getAllFlower() throws SQLException, ClassNotFoundException {
+		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
+		apiRespo.setObject(flowerService.getAllFlower());
+		return apiRespo;
 	}
 
 }
