@@ -12,6 +12,20 @@ public class Flower {
 	private Date created;
 	private Date updated;
 	private boolean isDeleted;
+	private String imagesName;
+	private String imageURL;
+	public String getImageURL() {
+		return imageURL;
+	}
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+	public String getImagesName() {
+		return imagesName;
+	}
+	public void setImagesName(String imagesName) {
+		this.imagesName = imagesName;
+	}
 	public int getId() {
 		return id;
 	}

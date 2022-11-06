@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import Config.SQLConnect;
 import DemoApp.model.*;
 import Helpers.MappingHelper;
+import Request.AccountRequest;
 import Request.FlowerRequest;
 
 @Repository
@@ -107,5 +108,35 @@ public class FlowerDAO {
 			}
 		}
 		return listFlower;
+	}
+	
+	public void addFlower(FlowerRequest request) throws SQLException, ClassNotFoundException {
+		Connection conn = SQLConnect.getConnection();
+		String callString = "{ ? = call dbo.sp_Flower_add(?,?,?,?,?,?,?,?) }";
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.registerOutParameter(1, Types.OTHER);
+			proc.setString(2, request.getName());
+			proc.setDouble(3, request.getPrice());
+			proc.setString(4, request.getContents());
+			proc.setInt(5, request.getDiscount());
+			proc.setString(6, request.getListImage());
+			proc.setString(7,"1");
+			proc.setString(8, "1");
+			proc.setInt(9,request.getQuantityIn());
+			proc.execute();
+			//int id = proc.getInt(1);
+			conn.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 }
