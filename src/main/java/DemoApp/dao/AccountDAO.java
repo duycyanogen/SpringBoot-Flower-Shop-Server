@@ -1,9 +1,7 @@
 package DemoApp.dao;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+
 import org.springframework.stereotype.Repository;
 import Config.SQLConnect;
 
@@ -17,6 +15,35 @@ public class AccountDAO {
 //	private DataSourceConfig myBeanConnect;
 	// @Autowired
 	// private SQLConnect connect;
+
+	public int login(AccountRequest request) throws SQLException, ClassNotFoundException {
+		Connection conn = SQLConnect.getConnection();
+		conn.setAutoCommit(false);
+		String callString = "{call dbo.sp_Login(?,?,?) }";
+		int userId = -1;
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.setString(1, request.getPhone());
+			proc.setString(2, request.getPassword());
+
+			proc.registerOutParameter(3, Types.INTEGER);
+			proc.execute();
+			userId = proc.getInt(3) != 0 ? proc.getInt(3) : userId;
+
+			conn.commit();
+			return userId;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 
 	public void createAccount(AccountRequest request) throws SQLException, ClassNotFoundException {
 		Connection conn = SQLConnect.getConnection();

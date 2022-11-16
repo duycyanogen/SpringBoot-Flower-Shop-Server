@@ -22,7 +22,28 @@ public class AccountController {
 	private AccountService accountService;
 
 
-	
+	@PostMapping("account/login")
+	public ResponseObject<Object> login(@RequestBody AccountRequest request) {
+		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
+		try {
+			int id = accountService.login(request);
+
+			if(id>0){
+				apiRespo.setObject(id);
+				apiRespo.setToastMessage("Đăng nhập thành công");
+			}else{
+				apiRespo.setObject(-1);
+				apiRespo.setToastMessage("Đăng nhập thất bại");
+			}
+		} catch (Exception e) {
+			apiRespo.setError(true);
+			apiRespo.setErrorReason(e.toString());
+			System.out.print(e);
+			apiRespo.setObject(e.toString());
+
+		}
+		return apiRespo;
+	}
 
 	@PostMapping("account/add-account")
 	public ResponseObject<Object> addAccount(@RequestBody AccountRequest request) {

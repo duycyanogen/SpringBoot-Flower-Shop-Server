@@ -16,9 +16,19 @@ import Request.FlowerRequest;
 @Service
 public class AccountService {
 	@Autowired
-	 private AccountDAO accountDAO;	
-	
-	
+	 private AccountDAO accountDAO;
+
+	public int login(AccountRequest request) throws SQLException, ClassNotFoundException
+	{
+		try {
+			int rs = accountDAO.login(request);
+			return rs;
+		}
+		catch (Exception e) {
+			throw e;
+		}
+
+	}
 	
 	public void createAccount(AccountRequest request) throws SQLException, ClassNotFoundException
 	{		
