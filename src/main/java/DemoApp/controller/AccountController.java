@@ -1,6 +1,7 @@
 package DemoApp.controller;
 
 
+import DemoApp.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +15,8 @@ import DemoApp.service.AccountService;
 import Request.AccountRequest;
 
 import Response.ResponseObject;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -29,10 +32,12 @@ public class AccountController {
 			int id = accountService.login(request);
 
 			if(id>0){
-				apiRespo.setObject(id);
+				request.setKeyword(Integer.toString(id));
+				List<Account> accounts = accountService.getUserByKeyword(request);
+				apiRespo.setObject(accounts);
 				apiRespo.setToastMessage("Đăng nhập thành công");
 			}else{
-				apiRespo.setObject(-1);
+
 				apiRespo.setToastMessage("Đăng nhập thất bại");
 			}
 		} catch (Exception e) {

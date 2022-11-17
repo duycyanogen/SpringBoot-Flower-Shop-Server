@@ -1,7 +1,13 @@
 package DemoApp.dao;
 
 import java.sql.*;
+import java.util.ArrayList;
 
+import DemoApp.model.Account;
+import DemoApp.model.Flower;
+import Helpers.MappingHelper;
+import Request.FlowerRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
 import Config.SQLConnect;
 
@@ -73,6 +79,35 @@ public class AccountDAO {
 				ex.printStackTrace();
 			}
 		}
+	}
+
+	public ArrayList<Account> getUserByKeyword(AccountRequest request) throws SQLException, ClassNotFoundException {
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		Connection conn = SQLConnect.getConnection();
+		String callString = "{ ? = call dbo.sp_GetUser(?) }";
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.registerOutParameter(1, Types.OTHER);
+			proc.setString(2, request.getKeyword());
+			proc.execute();
+			ResultSet resultSet = proc.getResultSet();
+			while (resultSet.next()) {
+				ModelMapper modelMapper = new ModelMapper();
+				Account account = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Account.class);
+				accounts.add(account);
+			}
+			conn.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return accounts;
 	}
 
 }
