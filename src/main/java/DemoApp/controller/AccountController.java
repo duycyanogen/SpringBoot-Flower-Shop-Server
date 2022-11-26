@@ -34,7 +34,7 @@ public class AccountController {
 			if(id>0){
 				request.setKeyword(Integer.toString(id));
 				List<Account> accounts = accountService.getUserByKeyword(request);
-				apiRespo.setObject(accounts);
+				apiRespo.setObject(accounts.get(0));
 				apiRespo.setToastMessage("Đăng nhập thành công");
 			}else{
 
