@@ -1,11 +1,31 @@
 package Request;
 
 public class AccountRequest {
+	private int id;
 	private String email;
 	private String password;
 	private String phone;
 	private String address;
 	private String name;
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	private String keyword;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	private int idRole;
 	public String getEmail() {
 		return email;

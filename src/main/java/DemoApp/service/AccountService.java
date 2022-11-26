@@ -3,6 +3,7 @@ package DemoApp.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import DemoApp.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,19 @@ import Request.FlowerRequest;
 @Service
 public class AccountService {
 	@Autowired
-	 private AccountDAO accountDAO;	
-	
-	
+	 private AccountDAO accountDAO;
+
+	public int login(AccountRequest request) throws SQLException, ClassNotFoundException
+	{
+		try {
+			int rs = accountDAO.login(request);
+			return rs;
+		}
+		catch (Exception e) {
+			throw e;
+		}
+
+	}
 	
 	public void createAccount(AccountRequest request) throws SQLException, ClassNotFoundException
 	{		
@@ -30,5 +41,14 @@ public class AccountService {
 			throw e;
 		}
 	}
-	
+
+	public ArrayList<Account> getUserByKeyword(AccountRequest request) throws SQLException, ClassNotFoundException {
+		try {
+			return accountDAO.getUserByKeyword(request);
+
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 }
