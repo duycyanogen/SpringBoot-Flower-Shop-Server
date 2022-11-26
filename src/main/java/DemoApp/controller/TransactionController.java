@@ -41,12 +41,19 @@ public class TransactionController {
 		return apiRespo;
 	}
 	
-//	@GetMapping(path = "/shop-cart/get-shop-cart-by-userID")
-//	public ResponseObject<Object> getTransactionByUserID(@RequestBody TransactionRequest request) throws SQLException, ClassNotFoundException {
-//		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
-//		apiRespo.setObject(TransactionService.getTransactionByUserID(request));
-//		return apiRespo;
-//	}
+	@GetMapping(path = "/transaction/get-all-transaction")
+	public ResponseObject<Object> getAllTransaction() throws SQLException, ClassNotFoundException {
+		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
+		apiRespo.setObject(TransactionService.getAllTransaction());
+		return apiRespo;
+	}
+	
+	@GetMapping(path = "/transaction/get-transaction-by-user")
+	public ResponseObject<Object> getTransactionByUser(@RequestBody TransactionRequest request) throws SQLException, ClassNotFoundException {
+		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
+		apiRespo.setObject(TransactionService.getTransactionByUser(request));
+		return apiRespo;
+	}
 //
 //	
 

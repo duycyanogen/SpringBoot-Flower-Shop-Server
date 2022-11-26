@@ -139,4 +139,52 @@ public class FlowerDAO {
 			}
 		}
 	}
+	
+	public void deleteFlower(FlowerRequest request) throws SQLException, ClassNotFoundException {
+		Connection conn = SQLConnect.getConnection();
+		String callString = "{ call dbo.sp_Flower_delete(?) }";
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.setInt(1, request.getId());
+			proc.execute();
+			//int id = proc.getInt(1);
+			conn.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateFlower(FlowerRequest request) throws SQLException, ClassNotFoundException {
+		Connection conn = SQLConnect.getConnection();
+		String callString = "{ ? = call dbo.sp_Flower_update(?,?,?,?,?) }";
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.setString(1, request.getName());
+			proc.setDouble(2, request.getPrice());
+			proc.setString(3, request.getContents());
+			proc.setInt(4, request.getDiscount());
+			proc.setInt(5, request.getId());
+			proc.execute();
+			//int id = proc.getInt(1);
+			conn.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 }

@@ -2,6 +2,7 @@ package DemoApp.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,11 @@ public class ShopCartService {
 
 	public ArrayList<ShopCart> getShopCartByUserID(ShopCartRequest request) throws SQLException, ClassNotFoundException {
 		try {
-
-			return shopCartDAO.getShopCartById(request);
+			ArrayList<ShopCart> lstShopCart = shopCartDAO.getShopCartById(request);
+			for (ShopCart objShopCart : lstShopCart) {
+				objShopCart.setImageURL("http://localhost:8080/image/" + objShopCart.getImagesName().split(",")[0]);
+			}
+			return lstShopCart;
 		} catch (Exception e) {
 			throw e;
 		}

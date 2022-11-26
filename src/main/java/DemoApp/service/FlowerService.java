@@ -2,6 +2,7 @@ package DemoApp.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class FlowerService {
 		try {
 			ArrayList<Flower> listFlower = flowerDAO.getAllFlower();
 			for (Flower flower : listFlower) {
-				flower.setImageURL("http://localhost:8080/image/" + flower.getImagesName());
+				flower.setImageURL("http://localhost:8080/image/" + flower.getImagesName().split(",")[0]);
 			}
 			return listFlower;
 
@@ -28,10 +29,21 @@ public class FlowerService {
 		}
 	}
 
-	public ArrayList<Flower> getFlowerById(FlowerRequest request) throws SQLException, ClassNotFoundException {
+	public Flower getFlowerById(FlowerRequest request) throws SQLException, ClassNotFoundException {
 		try {
-
-			return flowerDAO.getFlowerById(request);
+			Flower result = null;
+			ArrayList<Flower> listFlower = flowerDAO.getFlowerById(request);
+			if (listFlower.size() > 0) {
+				result = listFlower.get(0);
+				String[] listImageNames = result.getImagesName().split(",");
+				List<String> listImageURL = new ArrayList<String>();
+				for (String imageName : listImageNames) {
+					listImageURL.add("http://localhost:8080/image/" + imageName);
+				}
+				result.setListImageURL(listImageURL);
+				
+			}
+			return result;
 		} catch (Exception e) {
 			throw e;
 		}
@@ -50,6 +62,24 @@ public class FlowerService {
 		try {
 
 			flowerDAO.addFlower(request);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void updateFlower(FlowerRequest request) throws SQLException, ClassNotFoundException {
+		try {
+
+			flowerDAO.updateFlower(request);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void deleteFlower(FlowerRequest request) throws SQLException, ClassNotFoundException {
+		try {
+
+			flowerDAO.deleteFlower(request);
 		} catch (Exception e) {
 			throw e;
 		}

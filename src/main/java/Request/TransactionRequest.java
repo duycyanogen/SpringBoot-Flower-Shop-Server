@@ -12,7 +12,16 @@ public class TransactionRequest extends Transaction{
 	}
 	
 
-	
+	private int shopCartId;
+	public int getShopCartId() {
+		return shopCartId;
+	}
+
+	public void setShopCartId(int shopCartId) {
+		this.shopCartId = shopCartId;
+	}
+
+
 	private List<OrderRequest> lstOrderRequest;
 
 	public List<OrderRequest> getLstOrderRequest() {

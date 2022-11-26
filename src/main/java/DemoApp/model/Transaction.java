@@ -16,6 +16,13 @@ public class Transaction {
 	private int status;
 	private String note;
 	private boolean isCanceled;
+	private String fullName;
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 	public int getId() {
 		return id;
 	}

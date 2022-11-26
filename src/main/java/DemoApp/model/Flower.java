@@ -1,6 +1,7 @@
 package DemoApp.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Flower {
 	private int id;
@@ -14,6 +15,13 @@ public class Flower {
 	private boolean isDeleted;
 	private String imagesName;
 	private String imageURL;
+	private List<String> listImageURL;
+	public List<String> getListImageURL() {
+		return listImageURL;
+	}
+	public void setListImageURL(List<String> listImageURL) {
+		this.listImageURL = listImageURL;
+	}
 	public String getImageURL() {
 		return imageURL;
 	}

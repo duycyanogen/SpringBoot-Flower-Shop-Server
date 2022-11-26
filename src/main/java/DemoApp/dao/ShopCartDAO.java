@@ -43,6 +43,7 @@ public class ShopCartDAO {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
 		} finally {
 			try {
 				conn.close();
@@ -55,16 +56,16 @@ public class ShopCartDAO {
 
 	public void addShopCart(ShopCartRequest request) throws SQLException, ClassNotFoundException {
 		Connection conn = SQLConnect.getConnection();
-		String callString = "{ ? = call dbo.sp_ShopCart_add(?,?,?,?) }";
+		String callString = "{call dbo.sp_ShopCart_add(?,?,?,?) }";
 		try {
 			CallableStatement proc = conn.prepareCall(callString);
-			proc.registerOutParameter(1, Types.OTHER);
-			proc.setInt(2, request.getUserID());
-			proc.setInt(3, request.getIdFlower());
-			proc.setInt(4, request.getQuantity());
-			proc.setInt(5, request.getAmount());
+			proc.setInt(1, request.getUserID());
+			proc.setInt(2, request.getIdFlower());
+			proc.setDouble(3, request.getAmount());
+			proc.registerOutParameter(4, Types.INTEGER);
 			proc.execute();
-			//int id = proc.getInt(1);
+			int id = proc.getInt(4);
+			request.setId(id);
 			conn.commit();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -77,6 +78,19 @@ public class ShopCartDAO {
 				ex.printStackTrace();
 			}
 		}
+	}
+	
+	public void updateIsOrdered(Connection conn, ShopCartRequest request) throws SQLException, ClassNotFoundException {
+		String callString = "{ call dbo.sp_ShopCart_UpdateIsOrdered(?) }";
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.setInt(1, request.getId());
+			proc.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} 
 	}
 	
 }

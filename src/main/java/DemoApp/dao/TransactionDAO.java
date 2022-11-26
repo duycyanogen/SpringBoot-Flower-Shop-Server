@@ -24,33 +24,33 @@ public class TransactionDAO {
 	// @Autowired
 	// private SQLConnect connect;
 
-//	public ArrayList<Transaction> getAllTransaction() throws SQLException, ClassNotFoundException {
-//		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
-//		Connection conn = SQLConnect.getConnection();
-//		String callString = "{ ? = call dbo.sp_Transaction_GetAll() }";
-//		try {
-//			CallableStatement proc = conn.prepareCall(callString);
-//			proc.registerOutParameter(1, Types.OTHER);
-//			proc.execute();
-//			ResultSet resultSet = proc.getResultSet();
-//			while (resultSet.next()) {
-//				ModelMapper modelMapper = new ModelMapper();
-//				Transaction objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Transaction.class);
-//				listTransaction.add(objTransaction);
-//			}
-//			conn.commit();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				conn.close();
-//			} catch (SQLException ex) {
-//				ex.printStackTrace();
-//			}
-//		}
-//		return listTransaction;
-//	}
+	public ArrayList<Transaction> getAllTransaction() throws SQLException, ClassNotFoundException {
+		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
+		Connection conn = SQLConnect.getConnection();
+		String callString = "{ ? = call dbo.sp_Transaction_GetAll() }";
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.registerOutParameter(1, Types.OTHER);
+			proc.execute();
+			ResultSet resultSet = proc.getResultSet();
+			while (resultSet.next()) {
+				ModelMapper modelMapper = new ModelMapper();
+				Transaction objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Transaction.class);
+				listTransaction.add(objTransaction);
+			}
+			conn.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return listTransaction;
+	}
 //
 //	public ArrayList<Transaction> getTransactionById(TransactionRequest request) throws SQLException, ClassNotFoundException {
 //		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
@@ -81,34 +81,34 @@ public class TransactionDAO {
 //		return listTransaction;
 //	}
 //
-//	public ArrayList<Transaction> getTransactionByUser(TransactionRequest request) throws SQLException, ClassNotFoundException {
-//		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
-//		Connection conn = SQLConnect.getConnection();
-//		String callString = "{ ? = call dbo.sp_Transaction_GetByKey(?) }";
-//		try {
-//			CallableStatement proc = conn.prepareCall(callString);
-//			proc.registerOutParameter(1, Types.OTHER);
-//			proc.setString(2, request.getKeyword());
-//			proc.execute();
-//			ResultSet resultSet = proc.getResultSet();
-//			while (resultSet.next()) {
-//				ModelMapper modelMapper = new ModelMapper();
-//				Transaction objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Transaction.class);
-//				listTransaction.add(objTransaction);
-//			}
-//			conn.commit();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				conn.close();
-//			} catch (SQLException ex) {
-//				ex.printStackTrace();
-//			}
-//		}
-//		return listTransaction;
-//	}
+	public ArrayList<Transaction> getTransactionByUser(TransactionRequest request) throws SQLException, ClassNotFoundException {
+		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
+		Connection conn = SQLConnect.getConnection();
+		String callString = "{ ? = call dbo.sp_Transaction_getByUser(?) }";
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.registerOutParameter(1, Types.OTHER);
+			proc.setInt(2, request.getUserID());
+			proc.execute();
+			ResultSet resultSet = proc.getResultSet();
+			while (resultSet.next()) {
+				ModelMapper modelMapper = new ModelMapper();
+				Transaction objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Transaction.class);
+				listTransaction.add(objTransaction);
+			}
+			conn.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return listTransaction;
+	}
 	
 	public void addTransaction(Connection conn, TransactionRequest request) throws SQLException, ClassNotFoundException {
 		
@@ -128,7 +128,6 @@ public class TransactionDAO {
 			proc.execute();
 			int id = proc.getInt(9);
 			request.setId(id);
-			conn.commit();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			conn.rollback();
@@ -137,8 +136,37 @@ public class TransactionDAO {
 		} 
 	}
 
-	public ArrayList<Transaction> getAllTransaction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+public void updateStatus(Connection conn, TransactionRequest request) throws SQLException, ClassNotFoundException {
+	
+	String callString = "{ call dbo.sp_Transaction_updateStatus(?) }";
+	try {
+		CallableStatement proc = conn.prepareCall(callString);
+		
+		proc.setInt(1, request.getId());
+		proc.execute();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		conn.rollback();
+		e.printStackTrace();
+		throw e;
+	} 
+}
+
+public void cancelTransaction(Connection conn, TransactionRequest request) throws SQLException, ClassNotFoundException {
+	
+	String callString = "{ call dbo.sp_Transaction_cancel(?) }";
+	try {
+		CallableStatement proc = conn.prepareCall(callString);
+		
+		proc.setInt(1, request.getId());
+		proc.execute();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		conn.rollback();
+		e.printStackTrace();
+		throw e;
+	} 
+}
+
 }
