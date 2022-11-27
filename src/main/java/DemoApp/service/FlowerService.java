@@ -20,7 +20,11 @@ public class FlowerService {
 		try {
 			ArrayList<Flower> listFlower = flowerDAO.getAllFlower();
 			for (Flower flower : listFlower) {
-				flower.setImageURL("http://localhost:8080/image/" + flower.getImagesName().split(",")[0]);
+				if (!flower.getImagesName().isEmpty())
+				{
+					flower.setImageURL("http://localhost:8080/image/" + flower.getImagesName().split(",")[0]);					
+				}
+					
 			}
 			return listFlower;
 
