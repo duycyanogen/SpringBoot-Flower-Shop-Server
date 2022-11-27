@@ -64,7 +64,7 @@ public class FlowerController {
 		return apiRespo;
 	}
 
-	@GetMapping(path = "/flower/get-by-id")
+	@PostMapping(path = "/flower/get-by-id")
 	public ResponseObject<Object> getFlowerById(@RequestBody FlowerRequest request)
 			throws SQLException, ClassNotFoundException {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
