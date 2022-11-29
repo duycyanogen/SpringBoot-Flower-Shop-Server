@@ -30,7 +30,7 @@ public class TransactionController {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
 		try {
 			TransactionService.addTransaction(request);
-			apiRespo.setObject(request);
+			apiRespo.setObject("Yêu cầu thanh toán đơn hàng thành công");
 		} catch (Exception e) {
 			apiRespo.setError(true);
 			apiRespo.setErrorReason(e.toString());
@@ -41,14 +41,30 @@ public class TransactionController {
 		return apiRespo;
 	}
 	
-	@GetMapping(path = "/transaction/get-all-transaction")
+	@PostMapping("transaction/cancel-transaction")
+	public ResponseObject<Object> cancelTransaction(@RequestBody TransactionRequest request) {
+		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
+		try {
+			TransactionService.cancelTransaction(request);
+			apiRespo.setObject("Hủy yêu cầu thanh toán đơn hàng thành công");
+		} catch (Exception e) {
+			apiRespo.setError(true);
+			apiRespo.setErrorReason(e.toString());
+			System.out.print(e);
+			apiRespo.setObject(e.toString());
+
+		}
+		return apiRespo;
+	}
+	
+	@PostMapping(path = "/transaction/get-all-transaction")
 	public ResponseObject<Object> getAllTransaction() throws SQLException, ClassNotFoundException {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
 		apiRespo.setObject(TransactionService.getAllTransaction());
 		return apiRespo;
 	}
 	
-	@GetMapping(path = "/transaction/get-transaction-by-user")
+	@PostMapping(path = "/transaction/get-transaction-by-user")
 	public ResponseObject<Object> getTransactionByUser(@RequestBody TransactionRequest request) throws SQLException, ClassNotFoundException {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
 		apiRespo.setObject(TransactionService.getTransactionByUser(request));

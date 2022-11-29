@@ -81,8 +81,8 @@ public class TransactionDAO {
 //		return listTransaction;
 //	}
 //
-	public ArrayList<Transaction> getTransactionByUser(TransactionRequest request) throws SQLException, ClassNotFoundException {
-		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
+	public ArrayList<TransactionDetail> getTransactionByUser(TransactionRequest request) throws SQLException, ClassNotFoundException {
+		ArrayList<TransactionDetail> listTransactionDetail = new ArrayList<TransactionDetail>();
 		Connection conn = SQLConnect.getConnection();
 		String callString = "{ ? = call dbo.sp_Transaction_getByUser(?) }";
 		try {
@@ -93,8 +93,8 @@ public class TransactionDAO {
 			ResultSet resultSet = proc.getResultSet();
 			while (resultSet.next()) {
 				ModelMapper modelMapper = new ModelMapper();
-				Transaction objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Transaction.class);
-				listTransaction.add(objTransaction);
+				TransactionDetail objTransactionDetail = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), TransactionDetail.class);
+				listTransactionDetail.add(objTransactionDetail);
 			}
 			conn.commit();
 		} catch (Exception e) {
@@ -107,7 +107,7 @@ public class TransactionDAO {
 				ex.printStackTrace();
 			}
 		}
-		return listTransaction;
+		return listTransactionDetail;
 	}
 	
 	public void addTransaction(Connection conn, TransactionRequest request) throws SQLException, ClassNotFoundException {

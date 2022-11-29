@@ -10,7 +10,9 @@ import Config.SQLConnect;
 import DemoApp.dao.TransactionDAO;
 import DemoApp.dao.ShopCartDAO;
 import DemoApp.dao.OrderDAO;
+import DemoApp.model.Flower;
 import DemoApp.model.Transaction;
+import DemoApp.model.TransactionDetail;
 import Request.OrderRequest;
 import Request.ShopCartRequest;
 import Request.TransactionRequest;
@@ -36,10 +38,31 @@ public class TransactionService {
 		}
 	}
 	
-	public ArrayList<Transaction> getTransactionByUser(TransactionRequest request) throws SQLException, ClassNotFoundException {
+	public ArrayList<TransactionDetail> getTransactionByUser(TransactionRequest request) throws SQLException, ClassNotFoundException {
 		try {
-			ArrayList<Transaction> listTransaction = TransactionDAO.getTransactionByUser(request);
-			return listTransaction;
+			ArrayList<TransactionDetail> listTransactionDetail = TransactionDAO.getTransactionByUser(request);
+			for (TransactionDetail objTransactionDetail : listTransactionDetail) {
+				if (!objTransactionDetail.getImagesName().isEmpty())
+				{
+					objTransactionDetail.setImageURL("http://localhost:8080/image/" + objTransactionDetail.getImagesName().split(",")[0]);					
+				}
+				switch (objTransactionDetail.getTransactionStatus()) {
+				case 0:{
+					objTransactionDetail.setTransacitionStatusName("Đang chờ xác nhận");
+					break;
+				}
+				case 1:{
+					objTransactionDetail.setTransacitionStatusName("Đã xác nhận");
+					break;
+				}
+				case 2:{
+					objTransactionDetail.setTransacitionStatusName("Đã bị từ chối");
+					break;
+				}
+				}
+					
+			}
+			return listTransactionDetail;
 
 		} catch (Exception e) {
 			throw e;
