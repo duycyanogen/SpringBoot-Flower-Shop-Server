@@ -11,6 +11,13 @@ public class TransactionDetail {
 	private String imagesName;
 	private int transactionStatus;
 	private String transacitionStatusName;
+	private String customerName;
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
 	public String getTransacitionStatusName() {
 		return transacitionStatusName;
 	}

@@ -28,10 +28,31 @@ public class TransactionService {
 	@Autowired
 	private ShopCartDAO ShopCartDAO;
 	
-	public ArrayList<Transaction> getAllTransaction() throws SQLException, ClassNotFoundException {
+	public ArrayList<TransactionDetail> getAllTransaction() throws SQLException, ClassNotFoundException {
 		try {
-			ArrayList<Transaction> listTransaction = TransactionDAO.getAllTransaction();
-			return listTransaction;
+			ArrayList<TransactionDetail> listTransactionDetail = TransactionDAO.getAllTransaction();
+			for (TransactionDetail objTransactionDetail : listTransactionDetail) {
+				if (!objTransactionDetail.getImagesName().isEmpty())
+				{
+					objTransactionDetail.setImageURL("http://localhost:8080/image/" + objTransactionDetail.getImagesName().split(",")[0]);					
+				}
+				switch (objTransactionDetail.getTransactionStatus()) {
+				case 0:{
+					objTransactionDetail.setTransacitionStatusName("Đang chờ xác nhận");
+					break;
+				}
+				case 1:{
+					objTransactionDetail.setTransacitionStatusName("Đã xác nhận");
+					break;
+				}
+				case 2:{
+					objTransactionDetail.setTransacitionStatusName("Đã bị từ chối");
+					break;
+				}
+				}
+					
+			}
+			return listTransactionDetail;
 
 		} catch (Exception e) {
 			throw e;
