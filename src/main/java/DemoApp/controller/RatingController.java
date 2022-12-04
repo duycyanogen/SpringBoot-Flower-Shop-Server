@@ -22,7 +22,7 @@ public class RatingController {
 
 
 
-	@PostMapping(path = "/Rating/get-by-product")
+	@PostMapping(path = "/rating/get-by-product")
 	public ResponseEntity<Object> getRatingByProduct(@RequestBody RatingRequest request)
 			throws SQLException, ClassNotFoundException {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
@@ -36,13 +36,13 @@ public class RatingController {
 	}
 
 
-	@PostMapping("Rating/add-Rating")
+	@PostMapping("rating/add-rating")
 	public ResponseEntity<Object> addRating(@RequestBody RatingRequest request) {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
 		try {
 				
 			RatingService.addRating(request);
-			apiRespo.setObject("Thêm mới sản phẩm thành công!");
+			apiRespo.setObject("Đánh giá sản phẩm thành công!");
 			return ResponseEntity.ok(apiRespo);
 		} catch (Exception e) {
 			return Extensions.catchApplicationError(e, apiRespo, e.getMessage());

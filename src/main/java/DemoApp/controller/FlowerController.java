@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import javax.activation.FileTypeMap;
 import javax.imageio.ImageIO;
@@ -61,7 +62,11 @@ public class FlowerController {
 	public ResponseEntity<Object> getAllFlower() throws SQLException, ClassNotFoundException {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
 		try {
+			UUID uuid = UUID.randomUUID();
+			long startTime = System.currentTimeMillis();
 			apiRespo.setObject(flowerService.getAllFlower());
+			long endTime = System.currentTimeMillis();			
+			System.out.println(uuid.toString() + " - Update flower take "  + (endTime - startTime) + " milliseconds");
 			return ResponseEntity.ok(apiRespo);
 		} catch (Exception e) {
 			return Extensions.catchApplicationError(e, apiRespo, e.getMessage());
