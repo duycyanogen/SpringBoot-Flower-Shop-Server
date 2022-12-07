@@ -28,7 +28,7 @@ public class StatisticsController {
 	public ResponseObject<Object> getRevenue(@RequestBody StatisticsRequest request) throws SQLException, ClassNotFoundException, ParseException {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
 		String toDate = request.dateTo;
 		String fromDate = request.dateFrom;
