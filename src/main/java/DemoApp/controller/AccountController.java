@@ -24,6 +24,29 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 
+	@PostMapping("account/changepw")
+	public ResponseObject<Object> changepw(@RequestBody AccountRequest request) {
+		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
+		try {
+			int id = accountService.changepw(request);
+
+			if(id>0){
+				request.setKeyword(Integer.toString(id));
+				List<Account> accounts = accountService.getUserByKeyword(request);
+				apiRespo.setObject(accounts.get(0));
+				apiRespo.setToastMessage("Đổi mật khẩu thành công");
+			}else{
+
+				apiRespo.setToastMessage("Đổi mật khẩu thất bại");
+			}
+		} catch (Exception e) {
+			apiRespo.setError(true);
+			apiRespo.setErrorReason(e.toString());
+			apiRespo.setObject(e.toString());
+
+		}
+		return apiRespo;
+	}
 
 	@PostMapping("account/login")
 	public ResponseObject<Object> login(@RequestBody AccountRequest request) {

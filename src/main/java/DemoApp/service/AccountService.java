@@ -19,6 +19,18 @@ public class AccountService {
 	@Autowired
 	 private AccountDAO accountDAO;
 
+	public int changepw(AccountRequest request) throws SQLException, ClassNotFoundException
+	{
+		try {
+			int rs = accountDAO.changepw(request);
+			return rs;
+		}
+		catch (Exception e) {
+			throw e;
+		}
+
+	}
+
 	public int login(AccountRequest request) throws SQLException, ClassNotFoundException
 	{
 		try {
