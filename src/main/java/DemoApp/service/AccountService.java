@@ -42,7 +42,18 @@ public class AccountService {
 		}
 
 	}
-	
+
+	public void updateAccount(AccountRequest request) throws SQLException, ClassNotFoundException
+	{
+		try {
+
+			accountDAO.updateAccount(request);
+		}
+		catch (Exception e) {
+			throw e;
+		}
+	}
+
 	public void createAccount(AccountRequest request) throws SQLException, ClassNotFoundException
 	{		
 		try {

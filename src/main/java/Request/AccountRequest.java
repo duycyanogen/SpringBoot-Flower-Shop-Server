@@ -8,6 +8,16 @@ public class AccountRequest {
 	private String address;
 	private String name;
 
+	private int loyaltyPoint;
+
+	public int getLoyaltyPoint() {
+		return loyaltyPoint;
+	}
+
+	public void setLoyaltyPoint(int loyaltyPoint) {
+		this.loyaltyPoint = loyaltyPoint;
+	}
+
 	public String getKeyword() {
 		return keyword;
 	}

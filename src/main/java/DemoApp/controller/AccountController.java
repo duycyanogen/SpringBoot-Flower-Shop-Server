@@ -88,7 +88,21 @@ public class AccountController {
 		}
 		return apiRespo;
 	}
+	@PostMapping("account/update-account")
+	public ResponseObject<Object> updateAccount(@RequestBody AccountRequest request) {
+		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
+		try {
+			accountService.updateAccount(request);
+			apiRespo.setObject("Cập nhật thành công");
+		} catch (Exception e) {
+			apiRespo.setError(true);
+			apiRespo.setErrorReason(e.toString());
+			System.out.print(e);
+			apiRespo.setObject(e.toString());
 
+		}
+		return apiRespo;
+	}
 	
 
 }
