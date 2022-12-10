@@ -22,6 +22,35 @@ public class AccountDAO {
 	// @Autowired
 	// private SQLConnect connect;
 
+	public int changepw(AccountRequest request) throws SQLException, ClassNotFoundException {
+		Connection conn = SQLConnect.getConnection();
+		conn.setAutoCommit(false);
+		String callString = "{call dbo.sp_updatePass(?,?) }";
+		int userId = -1;
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.setString(1, request.getPassword());
+			proc.setInt(2, request.getId());
+
+			proc.registerOutParameter(2, Types.INTEGER);
+			proc.execute();
+			userId = proc.getInt(2) != 0 ? proc.getInt(2) : userId;
+
+			conn.commit();
+			return userId;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
 	public int login(AccountRequest request) throws SQLException, ClassNotFoundException {
 		Connection conn = SQLConnect.getConnection();
 		conn.setAutoCommit(false);
