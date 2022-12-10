@@ -24,7 +24,7 @@ public class StatisticsController {
 	private StatisticsService statisticsService;
 
 	
-	@GetMapping(path = "/stat/get-revenue")
+	@PostMapping(path = "/stat/get-revenue")
 	public ResponseObject<Object> getRevenue(@RequestBody StatisticsRequest request) throws SQLException, ClassNotFoundException, ParseException {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
 
