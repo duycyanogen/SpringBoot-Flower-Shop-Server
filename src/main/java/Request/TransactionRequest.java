@@ -13,6 +13,8 @@ public class TransactionRequest extends Transaction{
 	
 
 	private int shopCartId;
+
+
 	public int getShopCartId() {
 		return shopCartId;
 	}

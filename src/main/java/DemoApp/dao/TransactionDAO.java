@@ -24,8 +24,8 @@ public class TransactionDAO {
 	// @Autowired
 	// private SQLConnect connect;
 
-	public ArrayList<Transaction> getAllTransaction() throws SQLException, ClassNotFoundException {
-		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
+	public ArrayList<TransactionDetail> getAllTransaction() throws SQLException, ClassNotFoundException {
+		ArrayList<TransactionDetail> listTransaction = new ArrayList<TransactionDetail>();
 		Connection conn = SQLConnect.getConnection();
 		String callString = "{ ? = call dbo.sp_Transaction_GetAll() }";
 		try {
@@ -35,7 +35,7 @@ public class TransactionDAO {
 			ResultSet resultSet = proc.getResultSet();
 			while (resultSet.next()) {
 				ModelMapper modelMapper = new ModelMapper();
-				Transaction objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Transaction.class);
+				TransactionDetail objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), TransactionDetail.class);
 				listTransaction.add(objTransaction);
 			}
 			conn.commit();
@@ -51,38 +51,9 @@ public class TransactionDAO {
 		}
 		return listTransaction;
 	}
-//
-//	public ArrayList<Transaction> getTransactionById(TransactionRequest request) throws SQLException, ClassNotFoundException {
-//		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
-//		Connection conn = SQLConnect.getConnection();
-//		String callString = "{ ? = call dbo.sp_Transaction_GetById(?) }";
-//		try {
-//			CallableStatement proc = conn.prepareCall(callString);
-//			proc.registerOutParameter(1, Types.OTHER);
-//			proc.setInt(2, request.getId());
-//			proc.execute();
-//			ResultSet resultSet = proc.getResultSet();
-//			while (resultSet.next()) {
-//				ModelMapper modelMapper = new ModelMapper();
-//				Transaction objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Transaction.class);
-//				listTransaction.add(objTransaction);
-//			}
-//			conn.commit();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				conn.close();
-//			} catch (SQLException ex) {
-//				ex.printStackTrace();
-//			}
-//		}
-//		return listTransaction;
-//	}
-//
-	public ArrayList<Transaction> getTransactionByUser(TransactionRequest request) throws SQLException, ClassNotFoundException {
-		ArrayList<Transaction> listTransaction = new ArrayList<Transaction>();
+
+	public ArrayList<TransactionDetail> getTransactionByUser(TransactionRequest request) throws SQLException, ClassNotFoundException {
+		ArrayList<TransactionDetail> listTransactionDetail = new ArrayList<TransactionDetail>();
 		Connection conn = SQLConnect.getConnection();
 		String callString = "{ ? = call dbo.sp_Transaction_getByUser(?) }";
 		try {
@@ -93,8 +64,8 @@ public class TransactionDAO {
 			ResultSet resultSet = proc.getResultSet();
 			while (resultSet.next()) {
 				ModelMapper modelMapper = new ModelMapper();
-				Transaction objTransaction = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), Transaction.class);
-				listTransaction.add(objTransaction);
+				TransactionDetail objTransactionDetail = modelMapper.map(MappingHelper.MappingResultSetToObject(resultSet), TransactionDetail.class);
+				listTransactionDetail.add(objTransactionDetail);
 			}
 			conn.commit();
 		} catch (Exception e) {
@@ -107,7 +78,7 @@ public class TransactionDAO {
 				ex.printStackTrace();
 			}
 		}
-		return listTransaction;
+		return listTransactionDetail;
 	}
 	
 	public void addTransaction(Connection conn, TransactionRequest request) throws SQLException, ClassNotFoundException {
@@ -139,11 +110,12 @@ public class TransactionDAO {
 
 public void updateStatus(Connection conn, TransactionRequest request) throws SQLException, ClassNotFoundException {
 	
-	String callString = "{ call dbo.sp_Transaction_updateStatus(?) }";
+	String callString = "{ call dbo.sp_Transaction_updateStatus(?,?) }";
 	try {
 		CallableStatement proc = conn.prepareCall(callString);
 		
 		proc.setInt(1, request.getId());
+		proc.setInt(2, request.getStatus());
 		proc.execute();
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
