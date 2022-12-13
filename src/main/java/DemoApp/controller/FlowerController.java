@@ -87,7 +87,7 @@ public class FlowerController {
 		}
 	}
 
-	@GetMapping(path = "/flower/get-by-key")
+	@PostMapping(path = "/flower/get-by-key")
 	public ResponseEntity<Object> getFlowerByKey(@RequestBody FlowerRequest request)
 			throws SQLException, ClassNotFoundException {
 		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
@@ -163,7 +163,19 @@ try {
 	}
 
 
-	
+	@PostMapping("flower/update-views")
+	public ResponseEntity<Object> updateViews(@RequestBody FlowerRequest request) {
+		ResponseObject<Object> apiRespo = new ResponseObject<Object>();
+		try {
+
+			flowerService.updateViews(request);
+			apiRespo.setObject("Cập nhật lượng xem thành công");
+			return ResponseEntity.ok(apiRespo);
+		} catch (Exception e) {
+			return Extensions.catchApplicationError(e, apiRespo, e.getMessage());
+
+		}
+	}
 
 
 

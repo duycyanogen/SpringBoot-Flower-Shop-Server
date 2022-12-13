@@ -140,6 +140,27 @@ public class FlowerDAO {
 		}
 	}
 	
+	public void updateViews(FlowerRequest request) throws SQLException, ClassNotFoundException {
+		Connection conn = SQLConnect.getConnection();
+		String callString = "{ call dbo.sp_Flower_update_view(?) }";
+		try {
+			CallableStatement proc = conn.prepareCall(callString);
+			proc.setInt(1, request.getId());
+			proc.execute();
+			conn.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
 	public void deleteFlower(FlowerRequest request) throws SQLException, ClassNotFoundException {
 		Connection conn = SQLConnect.getConnection();
 		String callString = "{ call dbo.sp_Flower_delete(?) }";

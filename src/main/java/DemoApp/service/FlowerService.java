@@ -55,7 +55,15 @@ public class FlowerService {
 
 	public ArrayList<Flower> getFlowerByKey(FlowerRequest request) throws SQLException, ClassNotFoundException {
 		try {
-			return flowerDAO.getFlowerByKey(request);
+			ArrayList<Flower> listFlower = flowerDAO.getFlowerByKey(request);
+			for (Flower flower : listFlower) {
+				if (!flower.getImagesName().isEmpty())
+				{
+					flower.setImageURL("http://localhost:8080/image/" + flower.getImagesName().split(",")[0]);					
+				}
+					
+			}
+			return listFlower;
 
 		} catch (Exception e) {
 			throw e;
@@ -75,6 +83,15 @@ public class FlowerService {
 		try {
 
 			flowerDAO.updateFlower(request);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public void updateViews(FlowerRequest request) throws SQLException, ClassNotFoundException {
+		try {
+
+			flowerDAO.updateViews(request);
 		} catch (Exception e) {
 			throw e;
 		}
